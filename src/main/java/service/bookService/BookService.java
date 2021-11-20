@@ -3,10 +3,7 @@ package service.bookService;
 import config.ConnectSingleton;
 import module.Book;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,11 +12,10 @@ public class BookService implements IBookService {
     Connection connection = ConnectSingleton.getConnection();
     @Override
     public List<Book> showAllBook() {
-       bookList = new ArrayList<>();
-       String query = "call selectAllBook();";
+        List<Book> bookList = new ArrayList<>();
        try {
-           CallableStatement callableStatement = connection.prepareCall(query);
-           ResultSet rs = callableStatement.executeQuery();
+           PreparedStatement preparedStatement = connection.prepareStatement("select * from book;");
+           ResultSet rs = preparedStatement.executeQuery();
            while (rs.next()) {
                int id = rs.getInt(1);
                String bookCode = rs.getString(2);
@@ -56,5 +52,26 @@ public class BookService implements IBookService {
             e.printStackTrace();
         }
         return book;
+    }
+
+    public void borrowBook(int id) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("update book set count = count - 1 where id = ?;");
+       preparedStatement.setInt(1,id);
+       preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void returnBook(int id) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("update book set count = count + 1 where id = ?;");
+        preparedStatement.setInt(1,id);
+        preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }

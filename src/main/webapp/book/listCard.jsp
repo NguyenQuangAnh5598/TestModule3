@@ -27,6 +27,7 @@
         <th>Status</th>
         <th>Loan Date</th>
         <th>Back Date</th>
+        <th>action</th>
     </tr>
     <c:forEach items="${cardlist}" var="c">
         <c:if test="${c.status != false}">
@@ -37,9 +38,11 @@
                 <td>Dang muon</td>
                 <td>${c.loanDate}</td>
                 <td>${c.backDate}</td>
+                <td><a href="CardServlet?action=return&id=${c.id}">Return</a>></td>
             </tr>
         </c:if>
     </c:forEach>
 </table>
+<h2><a href="/CardServlet?action=showBookList">Show Book List</a> </h2>
 </body>
 </html>

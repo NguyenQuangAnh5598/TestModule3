@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface ICardService {
     List<Card> selectAllCard();
-    Card selectCardByID();
+    Card selectCardByID(int id);
      void createCard(Card card);
-     void upDateCard(Card card);
+     void updateCard(int id);
      void deleteCard(Card card);
 }
