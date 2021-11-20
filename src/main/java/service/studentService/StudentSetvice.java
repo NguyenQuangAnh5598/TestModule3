@@ -3,10 +3,7 @@ package service.studentService;
 import config.ConnectSingleton;
 import module.Student;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
 public class StudentSetvice implements IStudentService {
@@ -22,11 +19,10 @@ public class StudentSetvice implements IStudentService {
     @Override
     public Student selectStudentByID(int id) {
         Student student = null;
-        String query = "call selectStudentByID(?);";
         try {
-            CallableStatement callableStatement = connection.prepareCall(query);
-            callableStatement.setInt(1,id);
-            ResultSet rs = callableStatement.executeQuery();
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from student where id = ?;");
+            preparedStatement.setInt(1,id);
+            ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
                 String studentCode = rs.getString(2);
                 String studentName = rs.getString(3);

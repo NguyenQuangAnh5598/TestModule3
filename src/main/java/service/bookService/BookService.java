@@ -35,11 +35,10 @@ public class BookService implements IBookService {
     @Override
     public Book selectBookByID(int id) {
         Book book = null;
-        String query = "call selectBookByID(?);";
         try {
-            CallableStatement callableStatement = connection.prepareCall(query);
-            callableStatement.setInt(1,id);
-            ResultSet rs = callableStatement.executeQuery();
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from book where id = ?;");
+            preparedStatement.setInt(1,id);
+            ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
                 String bookCode = rs.getString(2);
                 String bookName = rs.getString(3);
